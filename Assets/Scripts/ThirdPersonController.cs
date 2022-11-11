@@ -36,7 +36,7 @@ public class ThirdPersonController : MonoBehaviour
     public GameObject[] cameras;
     
     //variable para coger objetos
-    GameObject ObjectToPick;
+    public GameObject ObjectToPick;
     [SerializeField]private GameObject pickedObject;
     [SerializeField]Transform interactionZone;
 
@@ -63,6 +63,7 @@ public class ThirdPersonController : MonoBehaviour
         
         //Lamamaos la funcion de salto
         Jump();
+        PickObjects();
 
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, 20f, rayLayer))
@@ -258,13 +259,26 @@ public class ThirdPersonController : MonoBehaviour
 
     void PickObjects()
     {
-        if(Input.GetKey(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.E))
         {
             if(ObjectToPick != null && pickedObject == null && ObjectToPick.gameObject.GetComponent<PickableObject>().isPickable == true)
             {
                 pickedObject = ObjectToPick;
                 pickedObject.GetComponent<PickableObject>().isPickable = false;
                 pickedObject.transform.SetParent(interactionZone);
+                pickedObject.transform.position = interactionZone.position;
+                pickedObject.GetComponent<Rigidbody>().useGravity = false;
+                pickedObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+
+            else if(pickedObject != null)
+            {
+                pickedObject.GetComponent<PickableObject>().isPickable = true;
+                pickedObject.transform.SetParent(null);
+                pickedObject.transform.position = interactionZone.position;
+                pickedObject.GetComponent<Rigidbody>().useGravity = true;
+                pickedObject.GetComponent<Rigidbody>().isKinematic = false;
+                pickedObject = null;
             }
         }
     }
