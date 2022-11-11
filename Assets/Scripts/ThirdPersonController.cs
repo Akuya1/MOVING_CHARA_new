@@ -265,7 +265,7 @@ public class ThirdPersonController : MonoBehaviour
 
             Vector3 pushDir = new Vector3(hit.moveDirection.x, 0f, hit.moveDirection.z);
 
-            body.velocity = pushDir * pushStrength;
+            body.velocity = pushDir * pushStrength / body.mass;
         }
     }
 }
