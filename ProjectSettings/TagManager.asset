@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Empujable
   - Pickable
+  - InteractionZone
   layers:
   - Default
   - TransparentFX

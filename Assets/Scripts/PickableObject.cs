@@ -10,12 +10,15 @@ public class PickableObject : MonoBehaviour
    {
         if(other.gameObject.tag == "InteractionZone")
         {
-            other.gameObject.GetComponent<ThirdPersonController>().ObjectToPick = this.gameObject;
+            other.gameObject.GetComponentInParent<ThirdPersonController>().ObjectToPick = this.gameObject;
         }
    }
 
    private void OnTriggerExit(Collider other) 
    {
-        other.gameObject.GetComponent<ThirdPersonController>().ObjectToPick = null; 
+        if(other.gameObject.tag == "InteractionZone")
+        {
+            other.gameObject.GetComponentInParent<ThirdPersonController>().ObjectToPick = null; 
+        }
    }
 }
