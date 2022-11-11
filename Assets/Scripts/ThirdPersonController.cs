@@ -34,6 +34,11 @@ public class ThirdPersonController : MonoBehaviour
     public Cinemachine.AxisState yAxis;
 
     public GameObject[] cameras;
+    
+    //variable para coger objetos
+    GameObject ObjectToPick;
+    [SerializeField]private GameObject pickedObject;
+    [SerializeField]Transform interactionZone;
 
     public LayerMask rayLayer;
     
@@ -249,6 +254,19 @@ public class ThirdPersonController : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(groundSensor.position, sensorRadius);
+    }
+
+    void PickObjects()
+    {
+        if(Input.GetKey(KeyCode.E))
+        {
+            if(ObjectToPick != null && pickedObject == null && ObjectToPick.gameObject.GetComponent<PickableObject>().isPickable == true)
+            {
+                pickedObject = ObjectToPick;
+                pickedObject.GetComponent<PickableObject>().isPickable = false;
+                pickedObject.transform.SetParent(interactionZone);
+            }
+        }
     }
 
     //Funcion para que al empujar un objeto, este se mueva.
