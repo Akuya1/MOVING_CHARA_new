@@ -53,6 +53,28 @@ public class ThirdPersonController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
 
+        ragdollBodies = GetComponentsInChildren<Rigidbody>();
+        sphereColliders = GetComponentsInChildren<SphereCollider>();
+        capsuleColliders = GetComponentsInChildren<CapsuleCollider>();
+
+        foreach (Rigidbody body in ragdollBodies)
+            {   
+                body.isKinematic = true;
+            }
+
+            foreach (SphereCollider sphere in sphereColliders)
+            {
+                sphere.enabled = false;
+            }
+
+            foreach (CapsuleCollider capsule in capsuleColliders)
+            {
+                 capsule.enabled = false;
+            }
+
+            controller.enabled = true;
+            anim.enabled = true;
+
         //Con esto podemos esconder el icono del raton para que no moleste
         //Cursor.lockState = CursorLockMode.Locked;
     }
@@ -68,8 +90,7 @@ public class ThirdPersonController : MonoBehaviour
         //Lamamaos la funcion de salto
         Jump();
         PickObjects();
-
-        //Ragdolls();
+        Ragdolls();
 
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, 20f, rayLayer))
