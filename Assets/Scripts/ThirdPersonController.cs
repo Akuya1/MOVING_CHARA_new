@@ -8,6 +8,10 @@ public class ThirdPersonController : MonoBehaviour
     [SerializeField]private CharacterController controller;
     [SerializeField]public Transform cam;
     private Animator anim;
+
+    private Rigidbody[] ragdollBodies;
+    private SphereCollider[] sphereColliders;
+    private CapsuleCollider[] capsuleColliders;
     public Transform LookAtTransform;
 
     //variables para controlar velocidad, altura de salto y gravedad
@@ -65,6 +69,8 @@ public class ThirdPersonController : MonoBehaviour
         Jump();
         PickObjects();
 
+        //Ragdolls();
+
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, 20f, rayLayer))
         {
@@ -72,7 +78,7 @@ public class ThirdPersonController : MonoBehaviour
             float hitDistance = hit.distance;
             string hitName = hit.transform.name;
             //Animator hitAnimator = hit.transform.GameObject.GetComponent<Animator>();
-            //hit.transform.GameObject.GetComponent<ScriptRandom>().FuncionRandom(); ex: si hi ha una bomba que el personatge explota, el raig al tocar l'escript de l'asset l'explotarà.
+            //hit.transform.GameObject.GetComponent<ScriptRandom>().FuncionRandom(); ex: si hi ha una bomba que el personatge explota, el raig al tocar l'escript de l'asset l'explotara.
             Debug.DrawRay(transform.position, transform.forward * 20f, Color.green);
             Debug.Log("posicion impacto: " + hitPosition + " distancia impacto: " + hitDistance + " nombre objeto: " + hitName);
         }
@@ -298,6 +304,30 @@ public class ThirdPersonController : MonoBehaviour
             Vector3 pushDir = new Vector3(hit.moveDirection.x, 0f, hit.moveDirection.z);
 
             body.velocity = pushDir * pushStrength / body.mass;
+        }
+    }
+
+    void Ragdolls()
+    {
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            foreach (Rigidbody body in ragdollBodies)
+            {   
+                body.isKinematic = false;
+            }
+
+            foreach (SphereCollider sphere in sphereColliders)
+            {
+                sphere.enabled = true;
+            }
+
+            foreach (CapsuleCollider capsule in capsuleColliders)
+            {
+                 capsule.enabled = true;
+            }
+
+            controller.enabled = false;
+            anim.enabled = false;
         }
     }
 }
