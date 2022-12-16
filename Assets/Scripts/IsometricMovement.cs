@@ -12,6 +12,8 @@ public class IsometricMovement : MonoBehaviour
     float gravity = -9.81f;
     Vector3 playerVelocity;
 
+    public LayerMask groundLayer;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -38,5 +40,14 @@ public class IsometricMovement : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
 
         //Rotation with Raycast
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+        {
+            Vector3 direction = hit.point - transform.position;
+            direction.y = 0;
+            transform.forward = direction;
+        }
     }
 }
