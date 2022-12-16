@@ -28,8 +28,8 @@ public class IsometricMovement : MonoBehaviour
         float velZ = Vector3.Dot(move.normalized, transform.forward);
         float velX = Vector3.Dot(move.normalized, transform.right);
 
-        anim.SetFloat("VelZ", Input.GetAxis("Vertical"));
-        anim.SetFloat("VelX", Input.GetAxis("Horizontal"));
+        anim.SetFloat("VelZ", velZ);
+        anim.SetFloat("VelX", velX);
 
 
         controller.Move(move.normalized * speed * Time.deltaTime);
