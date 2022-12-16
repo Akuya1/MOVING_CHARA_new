@@ -25,6 +25,13 @@ public class IsometricMovement : MonoBehaviour
     {
         Vector3 move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
+        float velZ = Vector3.Dot(move.normalized, transform.forward);
+        float velX = Vector3.Dot(move.normalized, transform.right);
+
+        anim.SetFloat("VelZ", Input.GetAxis("Vertical"));
+        anim.SetFloat("VelX", Input.GetAxis("Horizontal"));
+
+
         controller.Move(move.normalized * speed * Time.deltaTime);
 
         if(!controller.isGrounded && playerVelocity.y < 0)
